@@ -1,4 +1,4 @@
-using HTTPUtils;
+/*using HTTPUtils;
 using System.Text.Json;
 using AnsiTools;
 using Colors = AnsiTools.ANSICodes.Colors;
@@ -25,13 +25,13 @@ string taskID = "otYK2"; // We get the taskID from the previous response and use
 
 //#### FIRST TASK 
 // Fetch the details of the task from the server.
-Response task1Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonalID + "/" + taskID); // Get the task from the server
-Console.WriteLine(task1Response);
+Response task2Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonalID + "/" + taskID); // Get the task from the server
+Console.WriteLine(task2Response);
 
 Task task1 = JsonSerializer.Deserialize<Task>(task1Response.content);
-Console.WriteLine($"Task: {ANSICodes.Effects.Bold}{task1?.title}{ANSICodes.Reset}\n{task1?.description}\nParameters: {Colors.Cyan}{task1?.parameters}{ANSICodes.Reset}");
+Console.WriteLine($"Task: {ANSICodes.Effects.Bold}{task2?.title}{ANSICodes.Reset}\n{task2?.description}\nParameters: {Colors.Cyan}{task2?.parameters}{ANSICodes.Reset}");
 
-var answerArray = task1?.parameters.Split(',').Select(p => p.Trim()).Distinct().OrderBy(p => p).ToArray();
+var answerArray = task2?.parameters.Split(',').Select(p => p.Trim()).Distinct().OrderBy(p => p).ToArray();
 string answer = string.Join(",", answerArray);
 
 Response task1AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + taskID, answer.ToString());
@@ -49,7 +49,7 @@ Console.WriteLine("\n----------------------------\n");
     public string? userID { get; set; }
     public string? parameters { get; set; }
 }
-
+*/
 
 
 
