@@ -21,6 +21,7 @@ Response startRespons = await httpUtils.Get(baseURL + startEndpoint + myPersonal
 Console.WriteLine($"Start:\n{Colors.Magenta}{startRespons}{ANSICodes.Reset}\n\n"); 
 
 
+
 //#### FIRST TASK 
 
     taskID = "otYK2";
@@ -31,8 +32,10 @@ Console.WriteLine($"Start:\n{Colors.Magenta}{startRespons}{ANSICodes.Reset}\n\n"
     Task task1 = JsonSerializer.Deserialize<Task>(task1Response.content);
     Console.WriteLine($"Task: {ANSICodes.Effects.Bold}{task1?.title}{ANSICodes.Reset}\n{task1?.description}\nParameters: {Colors.Cyan}{task1?.parameters}{ANSICodes.Reset}");
 
-    var answerArray = task1?.parameters.Split(',').Select(p => p.Trim()).Distinct().OrderBy(p => p).ToArray();
-    string answer = string.Join(",", answerArray);
+
+            var answerArray = task1?.parameters.Split(',').Select(p => p.Trim()).Distinct().OrderBy(p => p).ToArray();
+            string answer = string.Join(",", answerArray);
+            
 
     Response task1AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + taskID, answer.ToString());
     Console.WriteLine($"Answer: {Colors.Green}{task1AnswerResponse}{ANSICodes.Reset}");
@@ -80,40 +83,41 @@ Console.WriteLine("\n----------------------------\n");
     Console.WriteLine($"Task: {ANSICodes.Effects.Bold}{task3?.title}{ANSICodes.Reset}\n{task3?.description}\nParameters: {Colors.Cyan}{task3?.parameters}{ANSICodes.Reset}");
 
 
-    string regularNumberParameters = string.Join(",", task3?.parameters.Split(',').Select(RomanToInt).Select(n => n.ToString()));
+        string regularNumberParameters = string.Join(",", task3?.parameters.Split(',').Select(RomanToInt).Select(n => n.ToString()));
             
+        static int RomanToInt(string s)
+        {
+            Dictionary<char, int> romanValues = new Dictionary<char, int>
+            {
+                {'I', 1},
+                {'V', 5},
+                {'X', 10},
+                {'L', 50},
+                {'C', 100},
+                {'D', 500},
+                {'M', 1000}
+            };
+
+            int total = 0;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                int currentValue = romanValues[s[i]];
+
+                if (i < s.Length - 1 && romanValues[s[i]] < romanValues[s[i + 1]])
+                {
+                    total -= currentValue;
+                }
+                else
+                {
+                    total += currentValue;
+                }
+            }return total;
+        }
+
     Response task3AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + taskID, regularNumberParameters);
     Console.WriteLine($"Answer: {Colors.Green}{task3AnswerResponse}{ANSICodes.Reset}");
 
-    static int RomanToInt(string s)
-    {
-        Dictionary<char, int> romanValues = new Dictionary<char, int>
-        {
-            {'I', 1},
-            {'V', 5},
-            {'X', 10},
-            {'L', 50},
-            {'C', 100},
-            {'D', 500},
-            {'M', 1000}
-        };
-
-        int total = 0;
-
-        for (int i = 0; i < s.Length; i++)
-        {
-            int currentValue = romanValues[s[i]];
-
-            if (i < s.Length - 1 && romanValues[s[i]] < romanValues[s[i + 1]])
-            {
-                total -= currentValue;
-            }
-            else
-            {
-                total += currentValue;
-            }
-        }return total;
-    }
    Console.WriteLine("\n----------------------------\n");
 
 //#### FOURTH TASK 
@@ -126,49 +130,50 @@ Console.WriteLine("\n----------------------------\n");
         Task task4 = JsonSerializer.Deserialize<Task>(task4Response.content);
         Console.WriteLine($"Task: {ANSICodes.Effects.Bold}{task4?.title}{ANSICodes.Reset}\n{task4?.description}\nParameters: {Colors.Cyan}{task4?.parameters}{ANSICodes.Reset}");
 
-        List<int> Numbers = task4?.parameters.Split(',').Select(int.Parse).ToList();
+               
+                List<int> Numbers = task4?.parameters.Split(',').Select(int.Parse).ToList();
 
-        List<int> primeNumbers = GetPrimeNumbers(Numbers);
+                List<int> primeNumbers = GetPrimeNumbers(Numbers);
 
-        string primeNumbersString = string.Join(",", primeNumbers);
+                string primeNumbersString = string.Join(",", primeNumbers);
+
+                                            
+            static List<int> GetPrimeNumbers(List<int> numbers)
+                {
+                    
+                    List<int> prime = new List<int>();
+
+                    foreach (int number in numbers)
+                    {
+                        if (IsPrime(number))
+                        {
+                            prime.Add(number);
+                        }
+                    }
+
+                    return prime;
+                }
+
+                static bool IsPrime(int number)
+                {
+                    if (number < 2)
+                    {
+                        return false;
+                    }
+
+                    for (int i = 2; i * i <= number; i++)
+                    {
+                        if (number % i == 0)
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
 
         Response task4AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + taskID, primeNumbersString);
-        Console.WriteLine($"Answer: {Colors.Green}{task3AnswerResponse}{ANSICodes.Reset}");
-                                              
- static List<int> GetPrimeNumbers(List<int> numbers)
-    {
-        
-        List<int> prime = new List<int>();
-
-        foreach (int number in numbers)
-        {
-            if (IsPrime(number))
-            {
-                prime.Add(number);
-            }
-        }
-
-        return prime;
-    }
-
-     static bool IsPrime(int number)
-    {
-        if (number < 2)
-        {
-            return false;
-        }
-
-        for (int i = 2; i * i <= number; i++)
-        {
-            if (number % i == 0)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
+        Console.WriteLine($"Answer: {Colors.Green}{task4AnswerResponse}{ANSICodes.Reset}");
 
 
  public class Task
